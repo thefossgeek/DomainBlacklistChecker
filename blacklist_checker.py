@@ -7,9 +7,6 @@ from netaddr import IPNetwork, IPAddress
 
 google_public_dns_ip = ['8.8.8.8', '8.8.4.4'] 
 
-# Update the CIDR in which you would like to check
-check_cidr = 'xx.xx.xx.xx/24'
-
 def get_args():
     """
     This method defines what arguments it requires, and it will figure out how to parse those out of `sys.argv`.
@@ -18,12 +15,19 @@ def get_args():
     parser = argparse.ArgumentParser(description='Python script to get Azure Key Vault Secret using REST API',
                 formatter_class = argparse.RawTextHelpFormatter)
 	
+    parser.add_argument('-c', '--cidr',
+                        help='The CIDR in which you want to lookup if the domain already blocklisted or not.',
+                        metavar='<cidr>',
+                        action='store',
+                        required=True,
+                       	default=None)
     parser.add_argument('-f', '--filename',
                         help='The full path of file which contain list of domain names.',
                         metavar='<filename>',
                         action='store',
                         required=True,
                        	default=None)
+
 
     args = parser.parse_args()
 
@@ -35,6 +39,7 @@ def main():
 
     infilename = args.filename
 
+    check_cidr = args.cidr
 
     dns_resolver = dns.resolver.Resolver(configure=False)
 
