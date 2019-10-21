@@ -1,6 +1,23 @@
 # DomainBlacklistChecker
 A DNS lookup tool to quickly review the standard DNS records for a domain and show the list of domain needs to be configured in blocklist
 
+# System Requirements
+
+These script have been tested with Ubuntu 18.04 with Python 3.6.8. However these script work with any Linux distribution with Python 3.0 and above. 
+
+```
+$ lsb_release -a
+No LSB modules are available.
+Distributor ID: Ubuntu
+Description:    Ubuntu 18.04.3 LTS
+Release:        18.04
+Codename:       bionic
+
+$ python3 --version
+Python 3.6.8
+
+``` 
+
 # User Guide
 
 Follow the below instruction to run the script:
