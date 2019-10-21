@@ -2,7 +2,13 @@
 import sys
 import dns.resolver
 import argparse
+#from netaddr import CIDR, IP
+from netaddr import IPNetwork, IPAddress
 
+google_public_dns_ip = ['8.8.8.8', '8.8.4.4'] 
+
+# Update the CIDR in which you would like to check
+check_cidr = 'xx.xx.xx.xx/24'
 
 def get_args():
     """
@@ -29,7 +35,6 @@ def main():
 
     infilename = args.filename
 
-    google_public_dns_ip = ['8.8.8.8', '8.8.4.4'] 
 
     dns_resolver = dns.resolver.Resolver(configure=False)
 
@@ -43,11 +48,19 @@ def main():
             try:
                 query_local = dns.resolver.query(domain, 'A')
                 for ipval in query_local:
-                    print (domain, ipval.to_text())
+                    ipv4_address = ipval.to_text()
+                    #print (domain, ipval.to_text())
+                    if IPAddress(ipv4_address) in IPNetwork(check_cidr):
+                        # Continue if the IP address is internal IP.
+                        continue 
+                    else:
+                        # Print only domain needs to be block listed
+                        print (domain, ipval.to_text())
             except:
-                print (domain, 'notinlocal')
+                continue
         except:
-            print (domain, 'notingoogle') 
+            # Continue if the domain entry not in Google DNS.
+            continue 
 
     f.close()
 
